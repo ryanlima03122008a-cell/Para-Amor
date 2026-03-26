@@ -1,77 +1,139 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Flores Para Minha MIMi  🌻🍁</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Minha MIMi 🌻🍁</title><style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-<body>
-  <div class="container">
-    <div class="envelope">
-      <div class="envelope-inner">
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-        <!-- Frente de la carta -->
-        <div class="envelope-front">
-          <div class="postage-stamp">
-            <svg fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" 
-              viewBox="0 0 300 300" xml:space="preserve">
-              <path d="M253.98,257.652c0-8.568,8.568-17.748,17.136-18.361c-1.224-4.895-1.224-10.402-0.611-15.299 ..."></path>
-            </svg>
-          </div>
-          <div class="address">
-            <p><span>Para:</span> <span>Meu Morangão </span></p>
-            <p><span>De:</span> <span>Riri</span></p>
-          </div>
-        </div>
+.container {
+  text-align: center;
+  padding: 20px;
+}
 
-        <!-- Reverso con la carta -->
-        <div class="envelope-back">
-          <div class="top-fold"></div>
-          <div class="letter">
-            <img src="https://img.freepik.com/vector-premium/pulgar-dedos-imprimir-marca-huella-dactilar-amor-corazon_53500-1839.jpg" 
-                 alt="love1" class="custom-image">
+.envelope {
+  width: 260px;
+  height: 180px;
+  background: #ff4d6d;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  margin: auto;
+  transition: 0.4s;
+}
 
-            <p>Para meu Amor👑❤️ <span class="highlight">¡Te Amo!</span></p>
+.envelope::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff758f;
+  clip-path: polygon(0 0, 50% 50%, 100% 0);
+  transition: 0.4s;
+}
 
-            <img src="mochixd.png" alt="love2" class="custom-image2">
-          </div>
-        </div>
+.envelope.open::before {
+  transform: rotateX(180deg);
+}
 
-      </div>
-    </div>
+.letter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  width: 220px;
+  transition: 0.4s;
+}
 
-    <!-- 🌼 Botão abaixo da letra -->
-    <p></p>
-    <p></p>
-    <button id="goToFlowers" class="letter-button"> Ver suas Flores  ->🌻</button>
-  </div>
+.envelope.open .letter {
+  transform: translate(-50%, -50%) scale(1);
+}
 
-  <!-- 🎵 Audio oculto -->
-  <audio id="bg-music" loop>
-    <source src="flormusica.mp3" type="audio/mpeg">
-    Tu navegador no soporta audio.
-  </audio>
+.letter img {
+  width: 80px;
+  margin: 10px 0;
+}
 
-  <script>
-    const envelope = document.querySelector(".envelope");
-    const music = document.getElementById("bg-music");
+.message {
+  font-size: 16px;
+  color: #333;
+}
 
-    // Abrir/cerrar carta + reproducir música en el primer click
-    envelope.addEventListener("click", () => {
-      envelope.classList.toggle("open");
+.highlight {
+  color: #ff4d6d;
+  font-weight: bold;
+}
 
-      if (music.paused) {
-        music.play().catch(err => {
-          console.log("El navegador bloqueó el autoplay hasta interacción:", err);
-        });
-      }
-    });
+button {
+  margin-top: 25px;
+  padding: 14px 22px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  background: #ff4d6d;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 
-    // Redirigir al index1 al tocar el botón
-    document.getElementById("goToFlowers").addEventListener("click", () => {
-      window.location.href = "index1.html";
-    });
-  </script>
-</body>
+button:active {
+  transform: scale(0.95);
+}
+
+</style></head><body><div class="container">  <div class="envelope" id="envelope">
+    <div class="letter"><img src="https://img.freepik.com/vector-premium/pulgar-dedos-imprimir-marca-huella-dactilar-amor-corazon_53500-1839.jpg">
+  
+  <p class="message">Para meu Amor 👑❤️ <br><span class="highlight">Te Amo!</span></p>
+  
+  <img src="mochixd.png">
+
+</div>
+
+  </div><button id="goToFlowers">Ver suas flores 🌻</button>
+
+</div><audio id="bg-music" loop>
+  <source src="flormusica.mp3" type="audio/mpeg">
+</audio><script>
+const envelope = document.getElementById("envelope");
+const music = document.getElementById("bg-music");
+
+let opened = false;
+
+envelope.addEventListener("click", () => {
+  envelope.classList.toggle("open");
+
+  if (!opened) {
+    music.play().catch(() => {});
+    opened = true;
+  }
+});
+
+// Melhor navegação pra celular
+const btn = document.getElementById("goToFlowers");
+
+btn.addEventListener("touchstart", go);
+btn.addEventListener("click", go);
+
+function go() {
+  window.location.href = "index1.html";
+}
+
+</script></body>
 </html>
